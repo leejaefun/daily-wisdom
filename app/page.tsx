@@ -1,43 +1,11 @@
-"use client";
+import { getDailyQuote } from "@/lib/quotes";
+import QuoteDisplay from "./components/QuoteDisplay";
 
-import { useEffect, useState } from "react";
-import { getDailyQuote, Quote } from "@/lib/quotes";
-
+// 서버 컴포넌트: 여기서 데이터를 가져옵니다.
 export default function Home() {
-  const [quote, setQuote] = useState<Quote | null>(null);
-  const [visible, setVisible] = useState(false);
+  const quote = getDailyQuote();
 
-  useEffect(() => {
-    // 마운트 후 딜레이를 주어 천천히 나타나게 함
-    const dailyQuote = getDailyQuote();
-    setQuote(dailyQuote);
-
-    const timer = setTimeout(() => {
-      setVisible(true);
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (!quote) return null;
-
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-8 text-center bg-[#fdfbf7] selection:bg-stone-200">
-      <div
-        className={`max-w-2xl transition-all duration-1000 ease-out transform ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
-      >
-        <p className="text-xl md:text-3xl font-medium leading-loose md:leading-loose text-stone-800 break-keep mb-8">
-          "{quote.text}"
-        </p>
-        <p className="text-sm md:text-base text-stone-500 font-medium tracking-widest mt-6">
-          — {quote.author}
-        </p>
-      </div>
-
-      <footer className="absolute bottom-8 text-stone-300 text-xs tracking-widest uppercase">
-        Daily Wisdom
-      </footer>
-    </main>
-  );
+  // 클라이언트 컴포넌트에 데이터(결과)만 넘겨줍니다. 
+  // 전체 quotes 배열은 브라우저로 전송되지 않습니다.
+  return <QuoteDisplay quote={quote} />;
 }
