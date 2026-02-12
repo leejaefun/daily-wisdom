@@ -5,6 +5,7 @@ import { Quote } from "@/lib/quotes";
 
 export default function QuoteDisplay({ quote }: { quote: Quote }) {
     const [visible, setVisible] = useState(false);
+    const [timeLeft, setTimeLeft] = useState(60);
 
     useEffect(() => {
         // Mount 후 애니메이션 트리거
@@ -12,7 +13,15 @@ export default function QuoteDisplay({ quote }: { quote: Quote }) {
             setVisible(true);
         }, 500);
 
-        return () => clearTimeout(timer);
+        // 60초 타이머 로직
+        const interval = setInterval(() => {
+            setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
+        }, 1000);
+
+        return () => {
+            clearTimeout(timer);
+            clearInterval(interval);
+        };
     }, []);
 
     return (
@@ -27,6 +36,14 @@ export default function QuoteDisplay({ quote }: { quote: Quote }) {
                 <p className="text-sm md:text-base text-stone-500 font-medium tracking-widest mt-6">
                     — {quote.author}
                 </p>
+
+                <div className="mt-12 flex justify-center">
+                    <div className={`transition-opacity duration-1000 ${visible ? "opacity-100" : "opacity-0"}`}>
+                        <div className="text-stone-300 font-light tracking-widest text-xs">
+                            {timeLeft > 0 ? `${timeLeft}` : " "}
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <footer className="absolute bottom-8 text-stone-300 text-xs tracking-widest uppercase">
