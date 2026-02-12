@@ -25,7 +25,7 @@ export default function QuoteDisplay({ quote }: { quote: Quote }) {
     }, []);
 
     return (
-        <main className="flex min-h-screen flex-col items-center justify-center p-8 text-center bg-[#fdfbf7] selection:bg-stone-200">
+        <main className="flex min-h-[100dvh] flex-col items-center justify-center p-8 text-center bg-[#fdfbf7] selection:bg-stone-200 pb-[env(safe-area-inset-bottom)]">
             <div
                 className={`max-w-2xl transition-all duration-1000 ease-out transform ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
                     }`}

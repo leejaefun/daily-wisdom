@@ -11,6 +11,20 @@ const myeongjo = Nanum_Myeongjo({
 export const metadata: Metadata = {
   title: "Daily Wisdom",
   description: "A daily dose of silence and wisdom.",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Daily Wisdom",
+  },
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+    viewportFit: "cover",
+  },
+  themeColor: "#fdfbf7",
 };
 
 export default function RootLayout({
