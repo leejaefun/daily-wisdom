@@ -37,7 +37,12 @@ export default function QuoteDisplay({ quote }: { quote: Quote }) {
                     — {quote.author}
                 </p>
 
-                <div className="mt-12 flex justify-center">
+                <div className="mt-12 flex flex-col items-center justify-center gap-4">
+                    <div className={`transition-opacity duration-1000 delay-500 ${visible ? "opacity-100" : "opacity-0"}`}>
+                        <p className="text-stone-400 text-sm font-light tracking-wider mb-2">
+                            깊게 심호흡 하며, 1분간 마음의 소리에 귀 기울여보세요.
+                        </p>
+                    </div>
                     <div className={`transition-opacity duration-1000 ${visible ? "opacity-100" : "opacity-0"}`}>
                         <div className="text-stone-300 font-light tracking-widest text-xs">
                             {timeLeft > 0 ? `${timeLeft}` : " "}
