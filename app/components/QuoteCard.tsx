@@ -2,6 +2,7 @@
 
 import { Quote } from "@/lib/quotes";
 import { useState, useEffect } from "react";
+import { useLanguage } from "../context/LanguageContext";
 
 interface QuoteCardProps {
     quote: Quote;
@@ -10,6 +11,10 @@ interface QuoteCardProps {
 
 export default function QuoteCard({ quote, date }: QuoteCardProps) {
     const [isFavorite, setIsFavorite] = useState(false);
+    const { language } = useLanguage();
+
+    const displayText = language === "en" && quote.textEn ? quote.textEn : quote.text;
+    const displayAuthor = language === "en" && quote.authorEn ? quote.authorEn : quote.author;
 
     useEffect(() => {
         const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
@@ -37,10 +42,10 @@ export default function QuoteCard({ quote, date }: QuoteCardProps) {
         <div className="bg-white p-6 rounded-lg shadow-sm border border-stone-100 mb-4 transition-all hover:shadow-md">
             {date && <p className="text-xs text-stone-400 mb-2">{date}</p>}
             <p className="font-serif text-stone-800 leading-relaxed mb-4 whitespace-pre-line">
-                {quote.text}
+                {displayText}
             </p>
             <div className="flex justify-between items-center text-xs">
-                <span className="text-stone-500 font-medium">— {quote.author}</span>
+                <span className="text-stone-500 font-medium">— {displayAuthor}</span>
                 <button
                     onClick={toggleFavorite}
                     className={`p-2 rounded-full transition-colors ${isFavorite ? "text-red-400 bg-red-50" : "text-stone-300 hover:text-stone-400"}`}

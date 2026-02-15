@@ -1,14 +1,41 @@
 export interface Quote {
     text: string;
     author: string;
+    textEn?: string;
+    authorEn?: string;
 }
 
 export const quotes: Quote[] = [
-    { text: "인생은 폭풍우가 지나가기를 기다리는 것이 아니라, 빗속에서 춤추는 법을 배우는 것이다.", author: "비비안 그린" },
-    { text: "나를 죽이지 못하는 고통은 나를 더 강하게 만든다.", author: "프리드리히 니체" },
-    { text: "너 자신의 무지를 절대 과소평가하지 마라.", author: "알베르트 아인슈타인" },
-    { text: "가장 위대한 영광은 한 번도 실패하지 않음이 아니라, 실패할 때마다 다시 일어서는 데 있다.", author: "공자" },
-    { text: "남을 아는 자는 지혜롭고, 자기를 아는 자는 명철하다.", author: "노자" },
+    {
+        text: "인생은 폭풍우가 지나가기를 기다리는 것이 아니라, 빗속에서 춤추는 법을 배우는 것이다.",
+        author: "비비안 그린",
+        textEn: "Life isn't about waiting for the storm to pass, it's about learning to dance in the rain.",
+        authorEn: "Vivian Greene"
+    },
+    {
+        text: "나를 죽이지 못하는 고통은 나를 더 강하게 만든다.",
+        author: "프리드리히 니체",
+        textEn: "That which does not kill us makes us stronger.",
+        authorEn: "Friedrich Nietzsche"
+    },
+    {
+        text: "너 자신의 무지를 절대 과소평가하지 마라.",
+        author: "알베르트 아인슈타인",
+        textEn: "Never underestimate your own ignorance.",
+        authorEn: "Albert Einstein"
+    },
+    {
+        text: "가장 위대한 영광은 한 번도 실패하지 않음이 아니라, 실패할 때마다 다시 일어서는 데 있다.",
+        author: "공자",
+        textEn: "Our greatest glory is not in never falling, but in rising every time we fall.",
+        authorEn: "Confucius"
+    },
+    {
+        text: "남을 아는 자는 지혜롭고, 자기를 아는 자는 명철하다.",
+        author: "노자",
+        textEn: "He who knows others is wise; he who knows himself is enlightened.",
+        authorEn: "Lao Tzu"
+    },
     { text: "어디를 가든지 마음을 다해 가라.", author: "공자" },
     { text: "자신을 사랑하는 법을 아는 것이 가장 위대한 사랑이다.", author: "마이클 휘트니" },
     { text: "행복은 이미 만들어진 것이 아니다. 당신의 행동에서 비롯된다.", author: "달라이 라마" },

@@ -1,9 +1,12 @@
+```javascript
 "use client";
 
 import { useState, useEffect } from "react";
+import { useLanguage } from "../context/LanguageContext";
 
 export default function SettingsPage() {
     const [permission, setPermission] = useState<NotificationPermission>("default");
+    const { language, setLanguage, t } = useLanguage();
 
     useEffect(() => {
         if (typeof window !== "undefined" && "Notification" in window) {
@@ -22,7 +25,7 @@ export default function SettingsPage() {
 
         if (result === "granted") {
             new Notification("Daily Wisdom", {
-                body: "알림이 설정되었습니다. 매일 아침 마음의 평화를 전해드릴게요. 🌿",
+                body: t("settings.notification.desc"),
             });
         }
     };
@@ -30,32 +33,51 @@ export default function SettingsPage() {
     return (
         <main className="min-h-screen flex flex-col items-center justify-start bg-[#fdfbf7] p-6 pb-24">
             <h1 className="text-xl font-serif text-stone-600 mb-8 mt-4 tracking-widest">
-                설정
+                {t("settings.title")}
             </h1>
-
-            <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-sm border border-stone-100">
-                <div className="flex items-center justify-between mb-4">
+            
+            <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-sm border border-stone-100 gap-6 flex flex-col">
+                {/* Language Selector */}
+                <div className="flex items-center justify-between">
                     <div>
-                        <h2 className="text-stone-800 font-medium">매일 알림 받기</h2>
-                        <p className="text-xs text-stone-400 mt-1">아침 7시에 오늘의 명언을 알려드립니다.</p>
+                        <h2 className="text-stone-800 font-medium">{t("settings.language")}</h2>
+                    </div>
+                    <select
+                        value={language}
+                        onChange={(e) => setLanguage(e.target.value as "ko" | "en")}
+                        className="bg-stone-50 border border-stone-200 text-stone-700 text-sm rounded-md focus:ring-stone-500 focus:border-stone-500 block p-2"
+                    >
+                        <option value="ko">한국어</option>
+                        <option value="en">English</option>
+                    </select>
+                </div>
+
+                <div className="h-px bg-stone-100" />
+
+                {/* Notification Toggle */}
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h2 className="text-stone-800 font-medium">{t("settings.notification")}</h2>
+                        <p className="text-xs text-stone-400 mt-1">{t("settings.notification.desc")}</p>
                     </div>
                     <button
                         onClick={requestPermission}
                         disabled={permission === "granted"}
-                        className={`px-4 py-2 rounded-full text-xs font-medium transition-colors ${permission === "granted"
-                            ? "bg-stone-100 text-stone-400 cursor-default"
-                            : "bg-stone-800 text-stone-100 hover:bg-stone-700"
-                            }`}
+                        className={`px - 4 py - 2 rounded - full text - xs font - medium transition - colors ${
+    permission === "granted"
+        ? "bg-stone-100 text-stone-400 cursor-default"
+        : "bg-stone-800 text-stone-100 hover:bg-stone-700"
+} `}
                     >
-                        {permission === "granted" ? "설정됨" : "켜기"}
+                        {permission === "granted" ? t("settings.notification.granted") : t("settings.notification.on")}
                     </button>
                 </div>
                 {permission === "granted" && (
                     <button
-                        onClick={() => new Notification("Daily Wisdom", { body: "테스트 알림입니다. 오늘도 평온한 하루 되세요! 🌿" })}
-                        className="text-xs text-stone-400 underline hover:text-stone-600 mt-2"
+                        onClick={() => new Notification("Daily Wisdom", { body: t("settings.notification.desc") })}
+                        className="text-xs text-stone-400 underline hover:text-stone-600 mt-2 text-right"
                     >
-                        알림 테스트 보내기
+                        {t("settings.test")}
                     </button>
                 )}
                 {permission === "denied" && (
@@ -66,8 +88,9 @@ export default function SettingsPage() {
             </div>
 
             <div className="w-full max-w-md mt-8 text-center">
-                <p className="text-xs text-stone-300">Daily Wisdom v1.0.0</p>
+                <p className="text-xs text-stone-300">Daily Wisdom v1.1.0</p>
             </div>
         </main>
     );
 }
+```

@@ -2,11 +2,16 @@
 
 import { useState, useEffect } from "react";
 import { Quote } from "@/lib/quotes";
+import { useLanguage } from "../context/LanguageContext";
 
 export default function QuoteDisplay({ quote }: { quote: Quote }) {
     const [visible, setVisible] = useState(false);
     const [timeLeft, setTimeLeft] = useState(60);
     const [isFavorite, setIsFavorite] = useState(false);
+    const { language, t } = useLanguage();
+
+    const displayText = language === "en" && quote.textEn ? quote.textEn : quote.text;
+    const displayAuthor = language === "en" && quote.authorEn ? quote.authorEn : quote.author;
 
     useEffect(() => {
         // Load initial favorite state
@@ -47,25 +52,23 @@ export default function QuoteDisplay({ quote }: { quote: Quote }) {
     }, []);
 
     return (
-        <main className="flex min-h-[100dvh] flex-col items-center justify-center p-8 text-center bg-[#fdfbf7] selection:bg-stone-200 pb-[env(safe-area-inset-bottom)]">
+        <div className="flex flex-col items-center justify-center min-h-[80vh] px-6 text-center">
             <div
                 className={`max-w-2xl transition-all duration-1000 ease-out transform ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
                     }`}
             >
-                <p className="text-xl md:text-3xl font-medium leading-loose md:leading-loose text-stone-800 break-keep mb-8">
-                    "{quote.text}"
+                <p className="font-serif text-xl md:text-3xl text-stone-700 leading-relaxed whitespace-pre-line">
+                    {displayText}
                 </p>
                 <p className="text-sm md:text-base text-stone-500 font-medium tracking-widest mt-6">
-                    — {quote.author}
+                    — {displayAuthor}
                 </p>
 
                 <div className="mt-12 flex flex-col items-center gap-6">
                     <div className={`transition-opacity duration-1000 delay-500 ${visible ? "opacity-100" : "opacity-0"}`}>
                         <p className="text-stone-400 text-sm font-light tracking-wider mb-2">
-                            깊게 심호흡 하며, 1분간 마음의 소리에 귀 기울여보세요.
+                            {t("quote.prompt")}
                         </p>
-                    </div>
-                    <div className={`transition-opacity duration-1000 ${visible ? "opacity-100" : "opacity-0"}`}>
                         <div className="text-stone-300 font-light tracking-widest text-xs">
                             {timeLeft > 0 ? `${timeLeft}` : " "}
                         </div>
