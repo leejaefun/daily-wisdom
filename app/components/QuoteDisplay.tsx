@@ -69,7 +69,7 @@ export default function QuoteDisplay({ quote }: { quote: Quote }) {
                         <p className="text-stone-400 text-sm font-light tracking-wider mb-2">
                             {t("quote.prompt")}
                         </p>
-                        <div className="text-stone-300 font-light tracking-widest text-xs">
+                        <div className="text-stone-500 font-medium tracking-widest text-sm animate-pulse">
                             {timeLeft > 0 ? `${timeLeft}` : " "}
                         </div>
                     </div>
