@@ -1,4 +1,3 @@
-```javascript
 "use client";
 
 import { useState, useEffect } from "react";
@@ -35,7 +34,7 @@ export default function SettingsPage() {
             <h1 className="text-xl font-serif text-stone-600 mb-8 mt-4 tracking-widest">
                 {t("settings.title")}
             </h1>
-            
+
             <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-sm border border-stone-100 gap-6 flex flex-col">
                 {/* Language Selector */}
                 <div className="flex items-center justify-between">
@@ -63,11 +62,10 @@ export default function SettingsPage() {
                     <button
                         onClick={requestPermission}
                         disabled={permission === "granted"}
-                        className={`px - 4 py - 2 rounded - full text - xs font - medium transition - colors ${
-    permission === "granted"
-        ? "bg-stone-100 text-stone-400 cursor-default"
-        : "bg-stone-800 text-stone-100 hover:bg-stone-700"
-} `}
+                        className={`px-4 py-2 rounded-full text-xs font-medium transition-colors ${permission === "granted"
+                                ? "bg-stone-100 text-stone-400 cursor-default"
+                                : "bg-stone-800 text-stone-100 hover:bg-stone-700"
+                            }`}
                     >
                         {permission === "granted" ? t("settings.notification.granted") : t("settings.notification.on")}
                     </button>
@@ -93,4 +91,3 @@ export default function SettingsPage() {
         </main>
     );
 }
-```
