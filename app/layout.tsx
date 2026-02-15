@@ -27,6 +27,10 @@ export const metadata: Metadata = {
   themeColor: "#fdfbf7",
 };
 
+import NavBar from "./components/NavBar";
+
+// ... (existing imports)
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -38,6 +42,7 @@ export default function RootLayout({
         className={`${myeongjo.className} antialiased bg-stone-100 text-stone-800`}
       >
         {children}
+        <NavBar />
       </body>
     </html>
   );

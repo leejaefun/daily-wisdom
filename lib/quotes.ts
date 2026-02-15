@@ -390,3 +390,39 @@ export function getDailyQuote(): Quote {
 
     return quotes[index];
 }
+
+function getKSTDate(date?: Date): Date {
+    const target = date || new Date();
+    // 1. 현재 시간(UTC)을 가져옴 -> target is already in UTC context if standard Date
+    // 2. KST(UTC+9)로 변환
+    const kstOffset = 9 * 60 * 60 * 1000;
+    return new Date(target.getTime() + kstOffset);
+}
+
+export function getQuoteForDate(dateString: string): Quote {
+    let hash = 0;
+    for (let i = 0; i < dateString.length; i++) {
+        hash = dateString.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const index = Math.abs(hash) % quotes.length;
+    return quotes[index];
+}
+
+export function getPastQuotes(days: number): { date: string; quote: Quote }[] {
+    const history = [];
+    const now = new Date();
+
+    for (let i = 0; i < days; i++) {
+        const pastDate = new Date(now);
+        pastDate.setDate(now.getDate() - i);
+
+        const kstDate = getKSTDate(pastDate);
+        const dateString = kstDate.toISOString().slice(0, 10);
+
+        history.push({
+            date: dateString,
+            quote: getQuoteForDate(dateString)
+        });
+    }
+    return history;
+}
