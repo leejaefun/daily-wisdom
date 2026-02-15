@@ -369,9 +369,15 @@ export const quotes: Quote[] = [
 ];
 
 export function getDailyQuote(): Quote {
-    // 현재 날짜를 기준으로 인덱스 생성 (UTC 기준)
-    // 클라이언트 사이드에서도 동일한 결과를 보여주기 위해 날짜 문자열 사용
-    const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+    // 현재 날짜를 기준으로 인덱스 생성 (KST 기준)
+    // 1. 현재 시간(UTC)을 가져옴
+    const now = new Date();
+    // 2. KST(UTC+9)로 변환: 9시간 * 60분 * 60초 * 1000밀리초 더함
+    const kstOffset = 9 * 60 * 60 * 1000;
+    const kstDate = new Date(now.getTime() + kstOffset);
+
+    // 3. YYYY-MM-DD 형식으로 변환
+    const today = kstDate.toISOString().slice(0, 10);
 
     // 간단한 해시 함수: 날짜 문자열의 각 문자의 코드값을 더함
     let hash = 0;

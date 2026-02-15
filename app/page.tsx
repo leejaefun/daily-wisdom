@@ -2,6 +2,8 @@ import { getDailyQuote } from "@/lib/quotes";
 import QuoteDisplay from "./components/QuoteDisplay";
 
 // 서버 컴포넌트: 여기서 데이터를 가져옵니다.
+export const dynamic = "force-dynamic";
+
 export default function Home() {
   const quote = getDailyQuote();
 
