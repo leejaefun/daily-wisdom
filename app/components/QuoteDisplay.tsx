@@ -66,7 +66,7 @@ export default function QuoteDisplay({ quote }: { quote: Quote }) {
 
                 <div className="mt-12 flex flex-col items-center gap-6">
                     <div className={`transition-opacity duration-1000 delay-500 ${visible ? "opacity-100" : "opacity-0"}`}>
-                        <p className="text-stone-400 text-sm font-light tracking-wider mb-2">
+                        <p className="text-stone-400 text-sm font-light tracking-wider mb-2 whitespace-pre-line">
                             {t("quote.prompt")}
                         </p>
                         <div className="text-stone-500 font-medium tracking-widest text-sm animate-pulse">

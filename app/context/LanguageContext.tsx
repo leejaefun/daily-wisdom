@@ -44,7 +44,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
             "favorites.title": { ko: "보관함", en: "Favorites" },
             "favorites.empty": { ko: "아직 보관된 명언이 없습니다.", en: "No favorites yet." },
             "favorites.empty.desc": { ko: "오늘의 명언에서 하트를 눌러보세요.", en: "Tap the heart on today's quote." },
-            "quote.prompt": { ko: "깊게 심호흡 하며, 1분간 마음의 소리에 귀 기울여보세요.", en: "Take a deep breath and listen to your heart for a minute." }
+            "quote.prompt": { ko: "이 문장은 오늘 당신에게 어떤 말을 건네고 있나요?\n깊게 심호흡하며, 1분간 그 울림에 귀 기울여 보세요.", en: "What does this sentence say to you today?\nTake a deep breath and listen to the resonance for a minute." }
         };
         return translations[key]?.[language] || key;
     };
