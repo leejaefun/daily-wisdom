@@ -1,12 +1,19 @@
 "use client";
 
-import { getPastQuotes } from "@/lib/quotes";
+import { getPastQuotes, Quote } from "@/lib/quotes";
 import QuoteCard from "../components/QuoteCard";
 import { useLanguage } from "../context/LanguageContext";
+import { useState, useEffect } from "react";
 
 export default function HistoryPage() {
     const { t } = useLanguage();
-    const history = getPastQuotes(30); // Last 30 days
+    const [history, setHistory] = useState<{ date: string; quote: Quote }[]>([]);
+
+    useEffect(() => {
+        setHistory(getPastQuotes(30));
+    }, []);
+
+    if (history.length === 0) return <div className="min-h-screen bg-[#fdfbf7]" />;
 
     return (
         <main className="min-h-screen flex flex-col items-center justify-start bg-[#fdfbf7] p-6 pb-24">

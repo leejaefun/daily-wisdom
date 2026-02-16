@@ -2,30 +2,62 @@
 
 import { useState, useEffect } from "react";
 import { useLanguage } from "../context/LanguageContext";
+import { LocalNotifications } from '@capacitor/local-notifications';
 
 export default function SettingsPage() {
     const [permission, setPermission] = useState<NotificationPermission>("default");
     const { language, setLanguage, t } = useLanguage();
 
     useEffect(() => {
-        if (typeof window !== "undefined" && "Notification" in window) {
-            setPermission(Notification.permission);
-        }
+        const checkPermission = async () => {
+            try {
+                const { display } = await LocalNotifications.checkPermissions();
+                // Map Capacitor 'prompt'/'prompt-with-rationale' to Web 'default'
+                if (display === 'granted') setPermission('granted');
+                else if (display === 'denied') setPermission('denied');
+                else setPermission('default');
+            } catch (e) {
+                console.log("LocalNotifications not available, falling back to web");
+                if (typeof window !== "undefined" && "Notification" in window) {
+                    setPermission(Notification.permission);
+                }
+            }
+        };
+        checkPermission();
     }, []);
 
     const requestPermission = async () => {
-        if (!("Notification" in window)) {
-            alert("이 브라우저는 알림을 지원하지 않습니다.");
-            return;
-        }
-
-        const result = await Notification.requestPermission();
-        setPermission(result);
-
-        if (result === "granted") {
-            new Notification("Daily Wisdom", {
-                body: t("settings.notification.desc"),
-            });
+        try {
+            const result = await LocalNotifications.requestPermissions();
+            if (result.display === 'granted') {
+                setPermission('granted');
+                // Schedule a daily notification at 7:00 AM
+                await LocalNotifications.schedule({
+                    notifications: [
+                        {
+                            title: "Daily Wisdom",
+                            body: t("settings.notification.desc"),
+                            id: 1,
+                            schedule: {
+                                on: {
+                                    hour: 7,
+                                    minute: 0,
+                                },
+                                allowWhileIdle: true
+                            },
+                        }
+                    ]
+                });
+            } else {
+                setPermission('denied');
+            }
+        } catch (error) {
+            console.error("Error requesting notification permission:", error);
+            // Fallback for web testing if plugin fails or not available
+            if ("Notification" in window) {
+                const result = await Notification.requestPermission();
+                setPermission(result);
+            }
         }
     };
 
@@ -63,8 +95,8 @@ export default function SettingsPage() {
                         onClick={requestPermission}
                         disabled={permission === "granted"}
                         className={`px-4 py-2 rounded-full text-xs font-medium transition-colors ${permission === "granted"
-                                ? "bg-stone-100 text-stone-400 cursor-default"
-                                : "bg-stone-800 text-stone-100 hover:bg-stone-700"
+                            ? "bg-stone-100 text-stone-400 cursor-default"
+                            : "bg-stone-800 text-stone-100 hover:bg-stone-700"
                             }`}
                     >
                         {permission === "granted" ? t("settings.notification.granted") : t("settings.notification.on")}
@@ -72,7 +104,18 @@ export default function SettingsPage() {
                 </div>
                 {permission === "granted" && (
                     <button
-                        onClick={() => new Notification("Daily Wisdom", { body: t("settings.notification.desc") })}
+                        onClick={async () => {
+                            await LocalNotifications.schedule({
+                                notifications: [
+                                    {
+                                        title: "Daily Wisdom",
+                                        body: t("settings.notification.desc"),
+                                        id: new Date().getTime(),
+                                        schedule: { at: new Date(Date.now() + 1000) }, // 1 second later
+                                    }
+                                ]
+                            });
+                        }}
                         className="text-xs text-stone-400 underline hover:text-stone-600 mt-2 text-right"
                     >
                         {t("settings.test")}
