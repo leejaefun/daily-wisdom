@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Quote } from "@/lib/quotes";
 import { useLanguage } from "../context/LanguageContext";
+import ShareButton from "./ShareButton";
 
 export default function QuoteDisplay({ quote }: { quote: Quote }) {
     const [visible, setVisible] = useState(false);
@@ -54,8 +55,9 @@ export default function QuoteDisplay({ quote }: { quote: Quote }) {
     return (
         <main className="flex flex-col items-center justify-center min-h-[80vh] px-6 text-center">
             <div
+                id="quote-card"
                 className={`max-w-2xl transition-all duration-1000 ease-out transform ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                    }`}
+                    } bg-[#fdfbf7] p-8 rounded-2xl`}
             >
                 <p className="font-serif text-xl md:text-3xl text-stone-700 leading-relaxed whitespace-pre-line">
                     {displayText}
@@ -74,15 +76,20 @@ export default function QuoteDisplay({ quote }: { quote: Quote }) {
                         </div>
                     </div>
 
-                    <button
-                        onClick={toggleFavorite}
-                        className={`transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"} p-3 rounded-full ${isFavorite ? "text-red-400 bg-red-50/10" : "text-stone-300 hover:text-stone-400"}`}
-                        aria-label="Toggle Favorite"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" fill={isFavorite ? "currentColor" : "none"} viewBox="0 0 24 24" strokeWidth="1.0" stroke="currentColor" className="w-6 h-6">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
-                        </svg>
-                    </button>
+                    <div className="flex items-center gap-4">
+                        <button
+                            onClick={toggleFavorite}
+                            className={`transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"} p-3 rounded-full ${isFavorite ? "text-red-400 bg-red-50/10" : "text-stone-300 hover:text-stone-400"}`}
+                            aria-label="Toggle Favorite"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill={isFavorite ? "currentColor" : "none"} viewBox="0 0 24 24" strokeWidth="1.0" stroke="currentColor" className="w-6 h-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                            </svg>
+                        </button>
+                        <div className={`transition-all duration-700 delay-100 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+                            <ShareButton targetId="quote-card" text={`${displayText}\n- ${displayAuthor}`} />
+                        </div>
+                    </div>
                 </div>
             </div>
 
