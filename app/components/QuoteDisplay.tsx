@@ -53,7 +53,12 @@ export default function QuoteDisplay({ quote }: { quote: Quote }) {
     }, []);
 
     return (
-        <main className="flex flex-col items-center justify-center min-h-[80vh] px-6 text-center">
+        <main className="flex flex-col items-center justify-center min-h-screen px-6 text-center relative">
+            <header className={`absolute top-12 flex flex-col items-center gap-3 transition-opacity duration-1000 ${visible ? "opacity-100" : "opacity-0"}`}>
+                <img src="/icon.png" alt="Daily Wisdom Logo" className="w-12 h-12 opacity-80 rounded-2xl shadow-sm" />
+                <h1 className="text-stone-400 text-xs tracking-[0.2em] font-serif uppercase">Daily Wisdom</h1>
+            </header>
+
             <div
                 id="quote-card"
                 className={`max-w-2xl transition-all duration-1000 ease-out transform ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
@@ -92,10 +97,6 @@ export default function QuoteDisplay({ quote }: { quote: Quote }) {
                     </div>
                 </div>
             </div>
-
-            <footer className="absolute bottom-8 text-stone-300 text-xs tracking-widest uppercase">
-                Daily Wisdom
-            </footer>
         </main>
     );
 }
