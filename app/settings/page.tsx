@@ -105,6 +105,27 @@ export default function SettingsPage() {
                         {permission === "granted" ? t("settings.notification.granted") : t("settings.notification.on")}
                     </button>
                 </div>
+                {permission === "granted" && (
+                    <div className="flex justify-end mt-2">
+                        <button
+                            onClick={async () => {
+                                await LocalNotifications.schedule({
+                                    notifications: [
+                                        {
+                                            title: "Daily Wisdom",
+                                            body: t("settings.notification.desc"),
+                                            id: new Date().getTime(),
+                                            schedule: { at: new Date(Date.now() + 1000) }, // 1 second later
+                                        }
+                                    ]
+                                });
+                            }}
+                            className="text-xs text-stone-400 underline hover:text-stone-600"
+                        >
+                            {t("settings.test")}
+                        </button>
+                    </div>
+                )}
 
                 <div className="h-px bg-stone-100" />
 
@@ -114,35 +135,28 @@ export default function SettingsPage() {
                         <h2 className="text-stone-800 font-medium">{t("settings.sound")}</h2>
                         <p className="text-xs text-stone-400 mt-1">{t("settings.sound.desc")}</p>
                     </div>
-                    <button
-                        onClick={toggleSound}
-                        className={`px-4 py-2 rounded-full text-xs font-medium transition-colors ${isPlaying
-                            ? "bg-stone-800 text-stone-100 hover:bg-stone-700"
-                            : "bg-stone-100 text-stone-400 hover:bg-stone-200"
-                            }`}
-                    >
-                        {isPlaying ? t("settings.sound.on") : t("settings.sound.off")}
-                    </button>
+                    <div className="flex bg-stone-100 rounded-lg p-1">
+                        <button
+                            onClick={() => isPlaying && toggleSound()}
+                            className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${!isPlaying
+                                ? "bg-white shadow-sm text-stone-800"
+                                : "text-stone-400 hover:text-stone-600"
+                                }`}
+                        >
+                            {t("settings.sound.off")}
+                        </button>
+                        <button
+                            onClick={() => !isPlaying && toggleSound()}
+                            className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${isPlaying
+                                ? "bg-white shadow-sm text-stone-800"
+                                : "text-stone-400 hover:text-stone-600"
+                                }`}
+                        >
+                            {t("settings.sound.on")}
+                        </button>
+                    </div>
                 </div>
-                {permission === "granted" && (
-                    <button
-                        onClick={async () => {
-                            await LocalNotifications.schedule({
-                                notifications: [
-                                    {
-                                        title: "Daily Wisdom",
-                                        body: t("settings.notification.desc"),
-                                        id: new Date().getTime(),
-                                        schedule: { at: new Date(Date.now() + 1000) }, // 1 second later
-                                    }
-                                ]
-                            });
-                        }}
-                        className="text-xs text-stone-400 underline hover:text-stone-600 mt-2 text-right"
-                    >
-                        {t("settings.test")}
-                    </button>
-                )}
+
                 {permission === "denied" && (
                     <p className="text-xs text-red-400 mt-2">
                         * 알림 권한이 차단되었습니다. 브라우저 설정에서 권한을 허용해 주세요.
