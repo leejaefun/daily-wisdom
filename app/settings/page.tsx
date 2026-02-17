@@ -9,16 +9,20 @@ export default function SettingsPage() {
     const [permission, setPermission] = useState<NotificationPermission>("default");
     const { language, setLanguage, t } = useLanguage();
     const { isPlaying, toggleSound } = useSound();
+    const [isNotificationEnabled, setIsNotificationEnabled] = useState(false);
 
 
     useEffect(() => {
         const checkPermission = async () => {
             try {
                 const { display } = await LocalNotifications.checkPermissions();
-                // Map Capacitor 'prompt'/'prompt-with-rationale' to Web 'default'
                 if (display === 'granted') setPermission('granted');
                 else if (display === 'denied') setPermission('denied');
                 else setPermission('default');
+
+                // Load saved preference
+                const saved = localStorage.getItem("notificationEnabled");
+                if (saved === "true") setIsNotificationEnabled(true);
             } catch (e) {
                 console.log("LocalNotifications not available, falling back to web");
                 if (typeof window !== "undefined" && "Notification" in window) {
@@ -127,8 +131,13 @@ export default function SettingsPage() {
                     </div>
                     <div className="flex bg-stone-100 rounded-lg p-1">
                         <button
-                            onClick={() => permission === "granted" && alert("알림을 끄려면 기기 설정에서 변경해야 합니다.")}
-                            className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${permission !== "granted"
+                            onClick={async () => {
+                                // Soft Disable: Cancel all notifications
+                                await LocalNotifications.cancel({ notifications: [{ id: 1 }] });
+                                setIsNotificationEnabled(false);
+                                localStorage.setItem("notificationEnabled", "false");
+                            }}
+                            className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${!isNotificationEnabled
                                 ? "bg-white shadow-sm text-stone-800"
                                 : "text-stone-400 hover:text-stone-600"
                                 }`}
@@ -136,8 +145,39 @@ export default function SettingsPage() {
                             {t("settings.notification.off")}
                         </button>
                         <button
-                            onClick={requestPermission}
-                            className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${permission === "granted"
+                            onClick={async () => {
+                                // Soft Enable: Request permission & Schedule
+                                if (permission !== 'granted') {
+                                    const result = await LocalNotifications.requestPermissions();
+                                    if (result.display === 'granted') {
+                                        setPermission('granted');
+                                    } else {
+                                        setPermission('denied');
+                                        return;
+                                    }
+                                }
+
+                                // Schedule notification
+                                await LocalNotifications.schedule({
+                                    notifications: [
+                                        {
+                                            title: "Daily Wisdom",
+                                            body: t("settings.notification.desc"),
+                                            id: 1,
+                                            schedule: {
+                                                on: {
+                                                    hour: 7,
+                                                    minute: 0,
+                                                },
+                                                allowWhileIdle: true
+                                            },
+                                        }
+                                    ]
+                                });
+                                setIsNotificationEnabled(true);
+                                localStorage.setItem("notificationEnabled", "true");
+                            }}
+                            className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${isNotificationEnabled
                                 ? "bg-white shadow-sm text-stone-800"
                                 : "text-stone-400 hover:text-stone-600"
                                 }`}
