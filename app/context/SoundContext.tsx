@@ -26,10 +26,13 @@ export function SoundProvider({ children }: { children: React.ReactNode }) {
         if (savedPreference === "true") {
             setIsPlaying(true);
             // Auto-play might be blocked by browser policy until user interaction
-            audioRef.current.play().catch(e => {
-                console.log("Auto-play prevented by browser policy, waiting for interaction.");
-                setIsPlaying(false); // Reset UI to off if blocked
-            });
+            const playPromise = audioRef.current.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(e => {
+                    console.log("Auto-play prevented by browser policy, waiting for interaction.");
+                    // Do not reset UI to off, keep it as user intended
+                });
+            }
         }
 
         return () => {
@@ -45,11 +48,16 @@ export function SoundProvider({ children }: { children: React.ReactNode }) {
         if (!audioRef.current) return;
 
         if (isPlaying) {
-            audioRef.current.play().catch(e => console.error("Play failed:", e));
+            const playPromise = audioRef.current.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(e => {
+                    console.error("Auto-play prevented:", e);
+                    // We do not reset isPlaying to false here to preserve user preference
+                });
+            }
         } else {
             audioRef.current.pause();
         }
-        localStorage.setItem("daily-wisdom-sound-enabled", String(isPlaying));
     }, [isPlaying]);
 
     // Handle volume change
@@ -60,7 +68,11 @@ export function SoundProvider({ children }: { children: React.ReactNode }) {
     }, [volume]);
 
     const toggleSound = () => {
-        setIsPlaying(prev => !prev);
+        setIsPlaying(prev => {
+            const newState = !prev;
+            localStorage.setItem("daily-wisdom-sound-enabled", String(newState));
+            return newState;
+        });
     };
 
     return (
