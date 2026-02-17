@@ -18,7 +18,7 @@ export function SoundProvider({ children }: { children: React.ReactNode }) {
 
     // Initialize audio and load preference
     useEffect(() => {
-        audioRef.current = new Audio("/sounds/forest_wind.mp3");
+        audioRef.current = new Audio("/sounds/singing_bowl.mp3");
         audioRef.current.loop = true;
         audioRef.current.volume = volume;
 

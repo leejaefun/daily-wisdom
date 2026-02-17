@@ -88,45 +88,6 @@ export default function SettingsPage() {
 
                 <div className="h-px bg-stone-100" />
 
-                {/* Notification Toggle */}
-                <div className="flex items-center justify-between">
-                    <div>
-                        <h2 className="text-stone-800 font-medium">{t("settings.notification")}</h2>
-                        <p className="text-xs text-stone-400 mt-1">{t("settings.notification.desc")}</p>
-                    </div>
-                    <button
-                        onClick={requestPermission}
-                        disabled={permission === "granted"}
-                        className={`px-4 py-2 rounded-full text-xs font-medium transition-colors ${permission === "granted"
-                            ? "bg-stone-100 text-stone-400 cursor-default"
-                            : "bg-stone-800 text-stone-100 hover:bg-stone-700"
-                            }`}
-                    >
-                        {permission === "granted" ? t("settings.notification.granted") : t("settings.notification.on")}
-                    </button>
-                </div>
-                {permission === "granted" && (
-                    <div className="flex justify-end mt-2">
-                        <button
-                            onClick={async () => {
-                                await LocalNotifications.schedule({
-                                    notifications: [
-                                        {
-                                            title: "Daily Wisdom",
-                                            body: t("settings.notification.desc"),
-                                            id: new Date().getTime(),
-                                            schedule: { at: new Date(Date.now() + 1000) }, // 1 second later
-                                        }
-                                    ]
-                                });
-                            }}
-                            className="text-xs text-stone-400 underline hover:text-stone-600"
-                        >
-                            {t("settings.test")}
-                        </button>
-                    </div>
-                )}
-
                 <div className="h-px bg-stone-100" />
 
                 {/* Sound Toggle */}
@@ -155,6 +116,26 @@ export default function SettingsPage() {
                             {t("settings.sound.on")}
                         </button>
                     </div>
+                </div>
+
+                <div className="h-px bg-stone-100" />
+
+                {/* Notification Toggle */}
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h2 className="text-stone-800 font-medium">{t("settings.notification")}</h2>
+                        <p className="text-xs text-stone-400 mt-1">{t("settings.notification.desc")}</p>
+                    </div>
+                    <button
+                        onClick={requestPermission}
+                        disabled={permission === "granted"}
+                        className={`px-4 py-2 rounded-full text-xs font-medium transition-colors ${permission === "granted"
+                            ? "bg-stone-100 text-stone-400 cursor-default"
+                            : "bg-stone-800 text-stone-100 hover:bg-stone-700"
+                            }`}
+                    >
+                        {permission === "granted" ? t("settings.notification.granted") : t("settings.notification.on")}
+                    </button>
                 </div>
 
                 {permission === "denied" && (

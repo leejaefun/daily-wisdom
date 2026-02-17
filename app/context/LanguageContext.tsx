@@ -41,7 +41,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
             "settings.notification.granted": { ko: "설정됨", en: "Enabled" },
             "settings.test": { ko: "알림 테스트 보내기", en: "Test Notification" },
             "settings.sound": { ko: "소리 설정", en: "Sound Settings" },
-            "settings.sound.desc": { ko: "자연의 소리", en: "Nature Sound" },
+            "settings.sound.desc": { ko: "싱잉볼 사운드", en: "Singing Bowl Sound" },
             "settings.sound.on": { ko: "켬", en: "On" },
             "settings.sound.off": { ko: "끔", en: "Off" },
             "history.title": { ko: "지난 명언", en: "Past Quotes" },
