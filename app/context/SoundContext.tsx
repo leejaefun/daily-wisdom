@@ -25,14 +25,6 @@ export function SoundProvider({ children }: { children: React.ReactNode }) {
         const savedPreference = localStorage.getItem("daily-wisdom-sound-enabled");
         if (savedPreference === "true") {
             setIsPlaying(true);
-            // Auto-play might be blocked by browser policy until user interaction
-            const playPromise = audioRef.current.play();
-            if (playPromise !== undefined) {
-                playPromise.catch(e => {
-                    console.log("Auto-play prevented by browser policy, waiting for interaction.");
-                    // Do not reset UI to off, keep it as user intended
-                });
-            }
         }
 
         return () => {
@@ -43,21 +35,42 @@ export function SoundProvider({ children }: { children: React.ReactNode }) {
         };
     }, []);
 
-    // Handle play/pause
+    // Handle play/pause and resume on interaction
     useEffect(() => {
         if (!audioRef.current) return;
 
-        if (isPlaying) {
-            const playPromise = audioRef.current.play();
-            if (playPromise !== undefined) {
-                playPromise.catch(e => {
-                    console.error("Auto-play prevented:", e);
-                    // We do not reset isPlaying to false here to preserve user preference
-                });
+        const playAudio = async () => {
+            try {
+                if (isPlaying) {
+                    await audioRef.current?.play();
+                } else {
+                    audioRef.current?.pause();
+                }
+            } catch (error) {
+                console.log("Auto-play prevented. Waiting for interaction...");
+                const resumeAudio = async () => {
+                    if (isPlaying && audioRef.current) {
+                        try {
+                            await audioRef.current.play();
+                            document.removeEventListener('click', resumeAudio);
+                            document.removeEventListener('touchstart', resumeAudio);
+                        } catch (e) {
+                            console.error("Resume failed:", e);
+                        }
+                    }
+                };
+                document.addEventListener('click', resumeAudio);
+                document.addEventListener('touchstart', resumeAudio);
             }
-        } else {
-            audioRef.current.pause();
-        }
+        };
+
+        playAudio();
+
+        return () => {
+            // Cleanup listeners if component unmounts or dependency changes
+            document.removeEventListener('click', () => { });
+            document.removeEventListener('touchstart', () => { });
+        };
     }, [isPlaying]);
 
     // Handle volume change
