@@ -3,10 +3,13 @@
 import { useState, useEffect } from "react";
 import { useLanguage } from "../context/LanguageContext";
 import { LocalNotifications } from '@capacitor/local-notifications';
+import { useSound } from "../context/SoundContext";
 
 export default function SettingsPage() {
     const [permission, setPermission] = useState<NotificationPermission>("default");
     const { language, setLanguage, t } = useLanguage();
+    const { isPlaying, toggleSound } = useSound();
+
 
     useEffect(() => {
         const checkPermission = async () => {
@@ -100,6 +103,25 @@ export default function SettingsPage() {
                             }`}
                     >
                         {permission === "granted" ? t("settings.notification.granted") : t("settings.notification.on")}
+                    </button>
+                </div>
+
+                <div className="h-px bg-stone-100" />
+
+                {/* Sound Toggle */}
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h2 className="text-stone-800 font-medium">{t("settings.sound")}</h2>
+                        <p className="text-xs text-stone-400 mt-1">{t("settings.sound.desc")}</p>
+                    </div>
+                    <button
+                        onClick={toggleSound}
+                        className={`px-4 py-2 rounded-full text-xs font-medium transition-colors ${isPlaying
+                            ? "bg-stone-800 text-stone-100 hover:bg-stone-700"
+                            : "bg-stone-100 text-stone-400 hover:bg-stone-200"
+                            }`}
+                    >
+                        {isPlaying ? t("settings.sound.on") : t("settings.sound.off")}
                     </button>
                 </div>
                 {permission === "granted" && (

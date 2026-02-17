@@ -29,6 +29,7 @@ export const metadata: Metadata = {
 
 import NavBar from "./components/NavBar";
 import { LanguageProvider } from "./context/LanguageContext";
+import { SoundProvider } from "./context/SoundContext";
 
 // ... (existing imports)
 
@@ -43,8 +44,10 @@ export default function RootLayout({
         className={`${myeongjo.className} antialiased bg-stone-100 text-stone-800`}
       >
         <LanguageProvider>
-          {children}
-          <NavBar />
+          <SoundProvider>
+            {children}
+            <NavBar />
+          </SoundProvider>
         </LanguageProvider>
       </body>
     </html>
