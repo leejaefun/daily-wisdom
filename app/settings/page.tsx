@@ -88,7 +88,7 @@ export default function SettingsPage() {
 
                 <div className="h-px bg-stone-100" />
 
-                <div className="h-px bg-stone-100" />
+
 
                 {/* Sound Toggle */}
                 <div className="flex items-center justify-between">
@@ -120,22 +120,31 @@ export default function SettingsPage() {
 
                 <div className="h-px bg-stone-100" />
 
-                {/* Notification Toggle */}
                 <div className="flex items-center justify-between">
                     <div>
                         <h2 className="text-stone-800 font-medium">{t("settings.notification")}</h2>
                         <p className="text-xs text-stone-400 mt-1">{t("settings.notification.desc")}</p>
                     </div>
-                    <button
-                        onClick={requestPermission}
-                        disabled={permission === "granted"}
-                        className={`px-4 py-2 rounded-full text-xs font-medium transition-colors ${permission === "granted"
-                            ? "bg-stone-100 text-stone-400 cursor-default"
-                            : "bg-stone-800 text-stone-100 hover:bg-stone-700"
-                            }`}
-                    >
-                        {permission === "granted" ? t("settings.notification.granted") : t("settings.notification.on")}
-                    </button>
+                    <div className="flex bg-stone-100 rounded-lg p-1">
+                        <button
+                            onClick={() => permission === "granted" && alert("알림을 끄려면 기기 설정에서 변경해야 합니다.")}
+                            className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${permission !== "granted"
+                                ? "bg-white shadow-sm text-stone-800"
+                                : "text-stone-400 hover:text-stone-600"
+                                }`}
+                        >
+                            {t("settings.notification.off")}
+                        </button>
+                        <button
+                            onClick={requestPermission}
+                            className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${permission === "granted"
+                                ? "bg-white shadow-sm text-stone-800"
+                                : "text-stone-400 hover:text-stone-600"
+                                }`}
+                        >
+                            {t("settings.notification.on")}
+                        </button>
+                    </div>
                 </div>
 
                 {permission === "denied" && (
