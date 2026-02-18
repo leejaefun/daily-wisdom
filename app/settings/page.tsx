@@ -169,6 +169,7 @@ export default function SettingsPage() {
                                                     hour: 7,
                                                     minute: 0,
                                                 },
+                                                repeats: true,
                                                 allowWhileIdle: true
                                             },
                                         }
