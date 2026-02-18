@@ -47,5 +47,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>Daily Wisdom needs permission to save quote cards to your photo library.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Daily Wisdom needs access to photos to save the quote card.</string>
 </dict>
 </plist>

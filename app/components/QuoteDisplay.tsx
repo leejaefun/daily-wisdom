@@ -54,7 +54,7 @@ export default function QuoteDisplay({ quote }: { quote: Quote }) {
 
     return (
         <main className="flex flex-col items-center justify-center min-h-screen px-6 text-center relative">
-            <header className={`absolute top-12 flex flex-col items-center gap-3 transition-opacity duration-1000 ${visible ? "opacity-100" : "opacity-0"}`}>
+            <header className={`absolute top-20 flex flex-col items-center gap-3 transition-opacity duration-1000 ${visible ? "opacity-100" : "opacity-0"}`}>
                 <img src="/icon.png" alt="Daily Wisdom Logo" className="w-12 h-12 opacity-80 rounded-2xl shadow-sm" />
                 <h1 className="text-stone-400 text-xs tracking-[0.2em] font-serif uppercase">Daily Wisdom</h1>
             </header>
