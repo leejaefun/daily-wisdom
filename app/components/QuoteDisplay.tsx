@@ -70,9 +70,6 @@ export default function QuoteDisplay({ quote }: { quote: Quote }) {
                 <p className="text-sm md:text-base text-stone-500 font-medium tracking-widest mt-6">
                     — {displayAuthor}
                 </p>
-                <div className="mt-8 pt-4 border-t border-stone-200/40 text-[10px] text-stone-400 font-sans tracking-widest uppercase">
-                    Daily Wisdom • https://apps.apple.com/app/id6759272132
-                </div>
 
                 <div className="mt-12 flex flex-col items-center gap-6">
                     <div className={`transition-opacity duration-1000 delay-500 ${visible ? "opacity-100" : "opacity-0"}`}>
