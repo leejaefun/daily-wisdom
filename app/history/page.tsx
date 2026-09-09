@@ -16,7 +16,7 @@ export default function HistoryPage() {
     if (history.length === 0) return <div className="min-h-screen bg-[#fdfbf7]" />;
 
     return (
-        <main className="min-h-screen flex flex-col items-center justify-start bg-[#fdfbf7] p-6 pb-24">
+        <main className="min-h-screen flex flex-col items-center justify-start bg-[#fdfbf7] p-6 pt-[calc(env(safe-area-inset-top)+1.5rem)] pb-[calc(5.5rem+env(safe-area-inset-bottom))] overflow-y-auto">
             <h1 className="text-xl font-serif text-stone-600 mb-8 mt-4 tracking-widest">
                 {t("history.title")}
             </h1>

@@ -418,18 +418,37 @@ export function getDailyQuote(): Quote {
 
 function getKSTDate(date?: Date): Date {
     const target = date || new Date();
-    // 1. 현재 시간(UTC)을 가져옴 -> target is already in UTC context if standard Date
-    // 2. KST(UTC+9)로 변환
     const kstOffset = 9 * 60 * 60 * 1000;
     return new Date(target.getTime() + kstOffset);
 }
 
-export function getQuoteForDate(dateString: string): Quote {
-    let hash = 0;
-    for (let i = 0; i < dateString.length; i++) {
-        hash = dateString.charCodeAt(i) + ((hash << 5) - hash);
+// Generate a deterministic shuffled permutation of quote indices for a given year
+function getYearPermutation(year: number, totalQuotes: number): number[] {
+    const indices = Array.from({ length: totalQuotes }, (_, i) => i);
+    let seed = (year * 1664525 + 1013904223) % 4294967296;
+    const random = () => {
+        seed = (seed * 1664525 + 1013904223) % 4294967296;
+        return (seed >>> 0) / 4294967296;
+    };
+    for (let i = indices.length - 1; i > 0; i--) {
+        const j = Math.floor(random() * (i + 1));
+        [indices[i], indices[j]] = [indices[j], indices[i]];
     }
-    const index = Math.abs(hash) % quotes.length;
+    return indices;
+}
+
+export function getQuoteForDate(dateString: string): Quote {
+    const [yearStr, monthStr, dayStr] = dateString.split("-");
+    const year = parseInt(yearStr, 10) || 2026;
+    const month = parseInt(monthStr, 10) || 1;
+    const day = parseInt(dayStr, 10) || 1;
+
+    const current = new Date(year, month - 1, day);
+    const startOfYear = new Date(year, 0, 1);
+    const dayOfYear = Math.floor((current.getTime() - startOfYear.getTime()) / (1000 * 60 * 60 * 24));
+
+    const permutation = getYearPermutation(year, quotes.length);
+    const index = permutation[Math.abs(dayOfYear) % quotes.length];
     return quotes[index];
 }
 

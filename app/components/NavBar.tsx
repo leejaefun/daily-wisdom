@@ -11,7 +11,7 @@ export default function NavBar() {
     const isActive = (path: string) => pathname === path;
 
     return (
-        <nav className="fixed bottom-0 left-0 right-0 h-16 bg-[#fdfbf7]/90 backdrop-blur-md border-t border-stone-100 flex items-center justify-around z-50 pb-[env(safe-area-inset-bottom)]">
+        <nav className="fixed bottom-0 left-0 right-0 h-[calc(3.5rem+env(safe-area-inset-bottom))] pb-[env(safe-area-inset-bottom)] bg-[#fdfbf7]/95 backdrop-blur-md border-t border-stone-200/60 flex items-center justify-around z-50">
             <Link
                 href="/"
                 className={`flex flex-col items-center justify-center w-full h-full ${isActive("/") ? "text-stone-800" : "text-stone-400"

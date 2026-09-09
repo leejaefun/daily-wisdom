@@ -33,29 +33,35 @@ export default function ShareButton({ targetId, text }: ShareButtonProps) {
             const blob = await (await fetch(image)).blob();
             const file = new File([blob], "daily-wisdom.png", { type: "image/png" });
 
+            const appStoreUrl = "https://apps.apple.com/app/id6759272132";
+            const shareTextWithLink = `${text}\n\n✨ Daily Wisdom에서 매일의 지혜를 받아보세요:\n${appStoreUrl}`;
+
             // 1. Web Share API (Image Support)
             if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
                 await navigator.share({
                     files: [file],
                     title: 'Daily Wisdom',
+                    text: shareTextWithLink,
+                    url: appStoreUrl,
                 });
             } else {
-                // 2. Native File Share Logic would go here (Capacitor Filesystem required for robust image share)
-                // For now, fallback to Text Share if native image share isn't straightforward without Filesystem
                 await Share.share({
                     title: 'Daily Wisdom',
-                    text: text,
+                    text: shareTextWithLink,
+                    url: appStoreUrl,
                     dialogTitle: 'Share Daily Wisdom',
                 });
             }
 
         } catch (error) {
             console.error("Share failed:", error);
-            // Fallback to text share on error (e.g. image generation failed or share sheet dismissed)
+            const appStoreUrl = "https://apps.apple.com/app/id6759272132";
+            const shareTextWithLink = `${text}\n\n✨ Daily Wisdom에서 매일의 지혜를 받아보세요:\n${appStoreUrl}`;
             try {
                 await Share.share({
                     title: 'Daily Wisdom',
-                    text: text,
+                    text: shareTextWithLink,
+                    url: appStoreUrl,
                     dialogTitle: 'Share Daily Wisdom',
                 });
             } catch (textError) {
