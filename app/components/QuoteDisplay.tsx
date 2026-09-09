@@ -53,10 +53,10 @@ export default function QuoteDisplay({ quote }: { quote: Quote }) {
     }, []);
 
     return (
-        <main className="flex flex-col items-center justify-between min-h-screen pt-[calc(env(safe-area-inset-top)+1.5rem)] pb-[calc(5.5rem+env(safe-area-inset-bottom))] px-6 text-center overflow-y-auto">
-            <header className={`flex flex-col items-center gap-2 mb-6 transition-opacity duration-1000 ${visible ? "opacity-100" : "opacity-0"}`}>
-                <img src="/icon.png" alt="Daily Wisdom Logo" className="w-12 h-12 opacity-80 rounded-2xl shadow-sm" />
-                <h1 className="text-stone-400 text-xs tracking-[0.2em] font-serif uppercase">Daily Wisdom</h1>
+        <main className="flex flex-col items-center justify-center min-h-screen pt-[calc(env(safe-area-inset-top)+1rem)] pb-[calc(5rem+env(safe-area-inset-bottom))] px-4 text-center overflow-y-auto">
+            <header className={`flex flex-col items-center gap-1.5 mb-4 transition-opacity duration-1000 ${visible ? "opacity-100" : "opacity-0"}`}>
+                <img src="/icon.png" alt="Daily Wisdom Logo" className="w-10 h-10 opacity-80 rounded-xl shadow-sm" />
+                <h1 className="text-stone-400 text-[10px] tracking-[0.2em] font-serif uppercase">Daily Wisdom</h1>
             </header>
 
             <div
@@ -70,6 +70,9 @@ export default function QuoteDisplay({ quote }: { quote: Quote }) {
                 <p className="text-sm md:text-base text-stone-500 font-medium tracking-widest mt-6">
                     — {displayAuthor}
                 </p>
+                <div className="mt-8 pt-4 border-t border-stone-200/40 text-[10px] text-stone-400 font-sans tracking-widest uppercase">
+                    Daily Wisdom • https://apps.apple.com/app/id6759272132
+                </div>
 
                 <div className="mt-12 flex flex-col items-center gap-6">
                     <div className={`transition-opacity duration-1000 delay-500 ${visible ? "opacity-100" : "opacity-0"}`}>
