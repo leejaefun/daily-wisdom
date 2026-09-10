@@ -53,7 +53,7 @@ export default function QuoteDisplay({ quote }: { quote: Quote }) {
     }, []);
 
     return (
-        <main className="flex flex-col items-center justify-center min-h-screen pt-[calc(env(safe-area-inset-top)+1rem)] pb-[calc(5rem+env(safe-area-inset-bottom))] px-4 text-center overflow-y-auto">
+        <main className="flex flex-col items-center justify-center min-h-screen pt-[calc(env(safe-area-inset-top)+1rem)] pb-[calc(6rem+env(safe-area-inset-bottom))] px-4 text-center overflow-y-auto">
             <header className={`flex flex-col items-center gap-1.5 mb-4 transition-opacity duration-1000 ${visible ? "opacity-100" : "opacity-0"}`}>
                 <img src="/icon.png" alt="Daily Wisdom Logo" className="w-10 h-10 opacity-80 rounded-xl shadow-sm" />
                 <h1 className="text-stone-400 text-[10px] tracking-[0.2em] font-serif uppercase">Daily Wisdom</h1>
