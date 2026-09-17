@@ -63,21 +63,28 @@ async function runMasterQASuite() {
   assert(quotesTs.includes('getQuoteForDate'), 'QA-03.2', 'lib/quotes.ts includes getQuoteForDate function');
 
   // ----------------------------------------------------
-  // QA-04: Share Button & App Store URL Verification (REQ-02)
+  // QA-04: Share Button & App Store URL Verification (REQ-CHANGE-02)
   // ----------------------------------------------------
-  console.log('\n--- [QA-04] Share Button & App Store URL (REQ-02) ---');
+  console.log('\n--- [QA-04] Share Button & App Store URL (REQ-CHANGE-02) ---');
   const shareTsx = fs.readFileSync(path.join(PROJECT_DIR, 'app/components/ShareButton.tsx'), 'utf-8');
   assert(shareTsx.includes('https://apps.apple.com/app/id6759272132'), 'QA-04.1', 'ShareButton.tsx includes App Store URL (id6759272132)');
-  assert(!shareTsx.includes('Daily Wisdom Card Watermark'), 'QA-04.2', 'Quote card DOM contains NO intrusive text/logo watermarks');
+  assert(!shareTsx.includes('url: appStoreUrl'), 'QA-04.2', 'ShareButton.tsx does NOT pass duplicate url parameter');
+  assert(!shareTsx.includes('Daily Wisdom Card Watermark'), 'QA-04.3', 'Quote card DOM contains NO intrusive text/logo watermarks');
 
   // ----------------------------------------------------
-  // QA-05: Xcode Project Versioning & Settings Check
+  // QA-05: Xcode Project & Versioning & Config Check (REQ-CHANGE-01, REQ-CHANGE-04)
   // ----------------------------------------------------
-  console.log('\n--- [QA-05] Xcode Project Versioning & Bundle ID ---');
+  console.log('\n--- [QA-05] Xcode Project Versioning & Settings & Central Version Check ---');
   const pbxproj = fs.readFileSync(path.join(PROJECT_DIR, 'ios/App/App.xcodeproj/project.pbxproj'), 'utf-8');
-  assert(pbxproj.includes('MARKETING_VERSION = 1.1.2;'), 'QA-05.1', 'pbxproj MARKETING_VERSION is 1.1.2');
-  assert(pbxproj.includes('CURRENT_PROJECT_VERSION = 4;'), 'QA-05.2', 'pbxproj CURRENT_PROJECT_VERSION is 4');
+  assert(pbxproj.includes('MARKETING_VERSION = 1.1.3;'), 'QA-05.1', 'pbxproj MARKETING_VERSION is 1.1.3');
+  assert(pbxproj.includes('CURRENT_PROJECT_VERSION = 5;'), 'QA-05.2', 'pbxproj CURRENT_PROJECT_VERSION is 5');
   assert(pbxproj.includes('PRODUCT_BUNDLE_IDENTIFIER = com.leejaefun.dailywisdom;'), 'QA-05.3', 'PRODUCT_BUNDLE_IDENTIFIER matches com.leejaefun.dailywisdom');
+
+  const versionTs = fs.readFileSync(path.join(PROJECT_DIR, 'app/constants/version.ts'), 'utf-8');
+  assert(versionTs.includes('APP_VERSION = "1.1.3"'), 'QA-05.4', 'app/constants/version.ts exports APP_VERSION "1.1.3"');
+
+  const capConfig = fs.readFileSync(path.join(PROJECT_DIR, 'capacitor.config.ts'), 'utf-8');
+  assert(capConfig.includes('smallIcon: \'ic_stat_icon\''), 'QA-05.5', 'capacitor.config.ts configures LocalNotifications smallIcon');
 
   // ----------------------------------------------------
   // QA-06: Puppeteer UI Floating Pill & Layout Verification (iPhone 12 Mini)

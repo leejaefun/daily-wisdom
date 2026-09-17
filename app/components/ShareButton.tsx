@@ -42,13 +42,11 @@ export default function ShareButton({ targetId, text }: ShareButtonProps) {
                     files: [file],
                     title: 'Daily Wisdom',
                     text: shareTextWithLink,
-                    url: appStoreUrl,
                 });
             } else {
                 await Share.share({
                     title: 'Daily Wisdom',
                     text: shareTextWithLink,
-                    url: appStoreUrl,
                     dialogTitle: 'Share Daily Wisdom',
                 });
             }
@@ -61,7 +59,6 @@ export default function ShareButton({ targetId, text }: ShareButtonProps) {
                 await Share.share({
                     title: 'Daily Wisdom',
                     text: shareTextWithLink,
-                    url: appStoreUrl,
                     dialogTitle: 'Share Daily Wisdom',
                 });
             } catch (textError) {

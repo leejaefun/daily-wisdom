@@ -62,10 +62,10 @@ function runPipelineAudit() {
   // 3. Xcode Project Settings & Versioning Check
   console.log('\n[3/4] Xcode Project Target & Version Consistency Check');
   const pbxproj = fs.readFileSync(path.join(PROJECT_DIR, 'ios/App/App.xcodeproj/project.pbxproj'), 'utf-8');
-  const versionOk = pbxproj.includes('MARKETING_VERSION = 1.1.2;') && pbxproj.includes('CURRENT_PROJECT_VERSION = 4;');
+  const versionOk = pbxproj.includes('MARKETING_VERSION = 1.1.3;') && pbxproj.includes('CURRENT_PROJECT_VERSION = 5;');
   const bundleOk = pbxproj.includes('PRODUCT_BUNDLE_IDENTIFIER = com.leejaefun.dailywisdom;');
 
-  console.log(`- Xcode Version 1.1.2 (Build 4): ${versionOk ? 'YES' : 'NO'}`);
+  console.log(`- Xcode Version 1.1.3 (Build 5): ${versionOk ? 'YES' : 'NO'}`);
   console.log(`- Bundle Identifier com.leejaefun.dailywisdom: ${bundleOk ? 'YES' : 'NO'}`);
 
   if (versionOk && bundleOk) {

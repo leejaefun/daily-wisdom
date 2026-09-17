@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useLanguage } from "../context/LanguageContext";
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { useSound } from "../context/SoundContext";
+import { APP_VERSION } from "../constants/version";
 
 export default function SettingsPage() {
     const [permission, setPermission] = useState<NotificationPermission>("default");
@@ -45,6 +46,8 @@ export default function SettingsPage() {
                             title: "Daily Wisdom",
                             body: t("settings.notification.desc"),
                             id: 1,
+                            smallIcon: "ic_stat_icon",
+                            iconColor: "#4A5568",
                             schedule: {
                                 on: {
                                     hour: 7,
@@ -69,7 +72,7 @@ export default function SettingsPage() {
     };
 
     return (
-        <main className="min-h-screen flex flex-col items-center justify-start bg-[#fdfbf7] p-6 pt-[calc(env(safe-area-inset-top)+1.5rem)] pb-[calc(5.5rem+env(safe-area-inset-bottom))] overflow-y-auto">
+        <main className="min-h-screen flex flex-col items-center justify-start bg-[#fdfbf7] p-6 pt-[calc(max(3.5rem,env(safe-area-inset-top))+1.5rem)] pb-[calc(5.5rem+env(safe-area-inset-bottom))] overflow-y-auto">
             <h1 className="text-xl font-serif text-stone-600 mb-8 mt-4 tracking-widest">
                 {t("settings.title")}
             </h1>
@@ -158,12 +161,15 @@ export default function SettingsPage() {
                                 }
 
                                 // Schedule notification
+                                await LocalNotifications.cancel({ notifications: [{ id: 1 }] });
                                 await LocalNotifications.schedule({
                                     notifications: [
                                         {
                                             title: "Daily Wisdom",
                                             body: t("settings.notification.desc"),
                                             id: 1,
+                                            smallIcon: "ic_stat_icon",
+                                            iconColor: "#4A5568",
                                             schedule: {
                                                 on: {
                                                     hour: 7,
@@ -196,7 +202,7 @@ export default function SettingsPage() {
             </div>
 
             <div className="w-full max-w-md mt-8 text-center">
-                <p className="text-xs text-stone-300">Daily Wisdom v1.1.0</p>
+                <p className="text-xs text-stone-300">Daily Wisdom v{APP_VERSION}</p>
             </div>
         </main>
     );
