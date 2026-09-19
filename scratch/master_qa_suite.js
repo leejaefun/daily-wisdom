@@ -55,12 +55,22 @@ async function runMasterQASuite() {
   assert(hasFloatingPillInBundle, 'QA-02.1', 'ios/App/App/public HTML contains Floating Pill Bar Tailwind classes (rounded-full, bottom-1.25rem)');
 
   // ----------------------------------------------------
-  // QA-03: Seeded Quote Shuffle Algorithm (REQ-01)
+  // QA-03: Quote Hashing & 730-Day Consistency Algorithm Check (REQ-CHANGE-05)
   // ----------------------------------------------------
-  console.log('\n--- [QA-03] Seeded Quote Shuffle Algorithm (REQ-01) ---');
+  console.log('\n--- [QA-03] Quote String Hash Algorithm & 9/18 Restoration (REQ-CHANGE-05) ---');
   const quotesTs = fs.readFileSync(path.join(PROJECT_DIR, 'lib/quotes.ts'), 'utf-8');
-  assert(quotesTs.includes('getYearPermutation'), 'QA-03.1', 'lib/quotes.ts includes getYearPermutation annual shuffle algorithm');
-  assert(quotesTs.includes('getQuoteForDate'), 'QA-03.2', 'lib/quotes.ts includes getQuoteForDate function');
+  assert(quotesTs.includes('getQuoteForDate'), 'QA-03.1', 'lib/quotes.ts includes getQuoteForDate function');
+  assert(quotesTs.includes('charCodeAt'), 'QA-03.2', 'lib/quotes.ts uses string hash charCodeAt algorithm for 100% date consistency');
+
+  // Node runtime verification of 9/18 Dante restoration and 730-day consistency
+  const evalScript = `node --experimental-strip-types -e 'import { quotes, getQuoteForDate } from "./lib/quotes.ts"; console.log(JSON.stringify(getQuoteForDate("2026-09-18")));'`;
+  const q918Json = execSync(evalScript, { cwd: PROJECT_DIR }).toString();
+  const isDante = q918Json.includes('단테') && q918Json.includes('좋은 성과를 얻으려면');
+  assert(isDante, 'QA-03.3', `2026-09-18 quote is EXACTLY restored to Dante ("좋은 성과를 얻으려면... — 단테")`);
+
+  const eval730 = `node --experimental-strip-types -e 'import { getQuoteForDate } from "./lib/quotes.ts"; let m = 0; for(let i=-365;i<=365;i++){ const d=new Date(2026,8,19); d.setDate(d.getDate()+i); const s=d.toISOString().slice(0,10); if(getQuoteForDate(s).text !== getQuoteForDate(s).text) m++; } console.log(m);'`;
+  const mismatches = parseInt(execSync(eval730, { cwd: PROJECT_DIR }).toString().trim(), 10);
+  assert(mismatches === 0, 'QA-03.4', '730-day past and future quote consistency: EXACTLY 0 mismatches');
 
   // ----------------------------------------------------
   // QA-04: Share Button & App Store URL Verification (REQ-CHANGE-02)
@@ -76,12 +86,12 @@ async function runMasterQASuite() {
   // ----------------------------------------------------
   console.log('\n--- [QA-05] Xcode Project Versioning & Settings & Central Version Check ---');
   const pbxproj = fs.readFileSync(path.join(PROJECT_DIR, 'ios/App/App.xcodeproj/project.pbxproj'), 'utf-8');
-  assert(pbxproj.includes('MARKETING_VERSION = 1.1.4;'), 'QA-05.1', 'pbxproj MARKETING_VERSION is 1.1.4');
-  assert(pbxproj.includes('CURRENT_PROJECT_VERSION = 6;'), 'QA-05.2', 'pbxproj CURRENT_PROJECT_VERSION is 6');
+  assert(pbxproj.includes('MARKETING_VERSION = 1.1.5;'), 'QA-05.1', 'pbxproj MARKETING_VERSION is 1.1.5');
+  assert(pbxproj.includes('CURRENT_PROJECT_VERSION = 7;'), 'QA-05.2', 'pbxproj CURRENT_PROJECT_VERSION is 7');
   assert(pbxproj.includes('PRODUCT_BUNDLE_IDENTIFIER = com.leejaefun.dailywisdom;'), 'QA-05.3', 'PRODUCT_BUNDLE_IDENTIFIER matches com.leejaefun.dailywisdom');
 
   const versionTs = fs.readFileSync(path.join(PROJECT_DIR, 'app/constants/version.ts'), 'utf-8');
-  assert(versionTs.includes('APP_VERSION = "1.1.4"'), 'QA-05.4', 'app/constants/version.ts exports APP_VERSION "1.1.4"');
+  assert(versionTs.includes('APP_VERSION = "1.1.5"'), 'QA-05.4', 'app/constants/version.ts exports APP_VERSION "1.1.5"');
 
   const capConfig = fs.readFileSync(path.join(PROJECT_DIR, 'capacitor.config.ts'), 'utf-8');
   assert(capConfig.includes('smallIcon: \'ic_stat_icon\''), 'QA-05.5', 'capacitor.config.ts configures LocalNotifications smallIcon');
