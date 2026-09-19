@@ -113,11 +113,11 @@ async function runDeepRiskAudit() {
   const versionTs = fs.readFileSync(path.join(PROJECT_DIR, 'app/constants/version.ts'), 'utf-8');
   const pkgJson = fs.readFileSync(path.join(PROJECT_DIR, 'package.json'), 'utf-8');
 
-  assert(versionTs.includes('APP_VERSION = "1.1.3"'), 'VER-01', 'Constants APP_VERSION is "1.1.3"');
-  assert(versionTs.includes('BUILD_NUMBER = "5"'), 'VER-02', 'Constants BUILD_NUMBER is "5"');
-  assert(pkgJson.includes('"version": "1.1.3"'), 'VER-03', 'package.json version is "1.1.3"');
-  assert(pbxproj.includes('MARKETING_VERSION = 1.1.3;'), 'VER-04', 'Xcode MARKETING_VERSION is 1.1.3');
-  assert(pbxproj.includes('CURRENT_PROJECT_VERSION = 5;'), 'VER-05', 'Xcode CURRENT_PROJECT_VERSION is 5');
+  assert(versionTs.includes('APP_VERSION = "1.1.4"'), 'VER-01', 'Constants APP_VERSION is "1.1.4"');
+  assert(versionTs.includes('BUILD_NUMBER = "6"'), 'VER-02', 'Constants BUILD_NUMBER is "6"');
+  assert(pkgJson.includes('"version": "1.1.4"'), 'VER-03', 'package.json version is "1.1.4"');
+  assert(pbxproj.includes('MARKETING_VERSION = 1.1.4;'), 'VER-04', 'Xcode MARKETING_VERSION is 1.1.4');
+  assert(pbxproj.includes('CURRENT_PROJECT_VERSION = 6;'), 'VER-05', 'Xcode CURRENT_PROJECT_VERSION is 6');
 
   // --- RISK CATEGORY 6: Native Public Bundle Freshness ---
   console.log('\n--- [RISK-06] Native iOS Public Bundle Code Freshness Audit ---');
@@ -142,15 +142,15 @@ async function runDeepRiskAudit() {
     await page.setViewport({ width: 375, height: 667, deviceScaleFactor: 2, isMobile: true });
     await page.goto(`${BASE_URL}/settings`, { waitUntil: 'networkidle2' });
     await page.evaluate(() => new Promise(r => setTimeout(r, 400)));
-    const seVersionText = await page.evaluate(() => document.body.innerText.includes('Daily Wisdom v1.1.3'));
-    assert(seVersionText, 'E2E-SE-01', 'iPhone SE viewport renders "Daily Wisdom v1.1.3" footer text');
+    const seVersionText = await page.evaluate(() => document.body.innerText.includes('Daily Wisdom v1.1.4'));
+    assert(seVersionText, 'E2E-SE-01', 'iPhone SE viewport renders "Daily Wisdom v1.1.4" footer text');
 
     // Test 2: Large Dynamic Island Device (iPhone 17 Pro - 402x874)
     await page.setViewport({ width: 402, height: 874, deviceScaleFactor: 3, isMobile: true });
     await page.goto(`${BASE_URL}/settings`, { waitUntil: 'networkidle2' });
     await page.evaluate(() => new Promise(r => setTimeout(r, 400)));
-    const dynamicIslandText = await page.evaluate(() => document.body.innerText.includes('Daily Wisdom v1.1.3'));
-    assert(dynamicIslandText, 'E2E-17-01', 'iPhone 17 Pro viewport renders "Daily Wisdom v1.1.3" footer text');
+    const dynamicIslandText = await page.evaluate(() => document.body.innerText.includes('Daily Wisdom v1.1.4'));
+    assert(dynamicIslandText, 'E2E-17-01', 'iPhone 17 Pro viewport renders "Daily Wisdom v1.1.4" footer text');
 
     const deepProofScreenshot = path.join(ARTIFACT_DIR, 'deep_risk_proof_settings.png');
     await page.screenshot({ path: deepProofScreenshot });

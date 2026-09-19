@@ -72,19 +72,22 @@ async function runMasterQASuite() {
   assert(!shareTsx.includes('Daily Wisdom Card Watermark'), 'QA-04.3', 'Quote card DOM contains NO intrusive text/logo watermarks');
 
   // ----------------------------------------------------
-  // QA-05: Xcode Project & Versioning & Config Check (REQ-CHANGE-01, REQ-CHANGE-04)
+  // QA-05: Xcode Project & Versioning & Config Check (REQ-CHANGE-01, REQ-CHANGE-04, REQ-CHANGE-05)
   // ----------------------------------------------------
   console.log('\n--- [QA-05] Xcode Project Versioning & Settings & Central Version Check ---');
   const pbxproj = fs.readFileSync(path.join(PROJECT_DIR, 'ios/App/App.xcodeproj/project.pbxproj'), 'utf-8');
-  assert(pbxproj.includes('MARKETING_VERSION = 1.1.3;'), 'QA-05.1', 'pbxproj MARKETING_VERSION is 1.1.3');
-  assert(pbxproj.includes('CURRENT_PROJECT_VERSION = 5;'), 'QA-05.2', 'pbxproj CURRENT_PROJECT_VERSION is 5');
+  assert(pbxproj.includes('MARKETING_VERSION = 1.1.4;'), 'QA-05.1', 'pbxproj MARKETING_VERSION is 1.1.4');
+  assert(pbxproj.includes('CURRENT_PROJECT_VERSION = 6;'), 'QA-05.2', 'pbxproj CURRENT_PROJECT_VERSION is 6');
   assert(pbxproj.includes('PRODUCT_BUNDLE_IDENTIFIER = com.leejaefun.dailywisdom;'), 'QA-05.3', 'PRODUCT_BUNDLE_IDENTIFIER matches com.leejaefun.dailywisdom');
 
   const versionTs = fs.readFileSync(path.join(PROJECT_DIR, 'app/constants/version.ts'), 'utf-8');
-  assert(versionTs.includes('APP_VERSION = "1.1.3"'), 'QA-05.4', 'app/constants/version.ts exports APP_VERSION "1.1.3"');
+  assert(versionTs.includes('APP_VERSION = "1.1.4"'), 'QA-05.4', 'app/constants/version.ts exports APP_VERSION "1.1.4"');
 
   const capConfig = fs.readFileSync(path.join(PROJECT_DIR, 'capacitor.config.ts'), 'utf-8');
   assert(capConfig.includes('smallIcon: \'ic_stat_icon\''), 'QA-05.5', 'capacitor.config.ts configures LocalNotifications smallIcon');
+
+  const homeTsx = fs.readFileSync(path.join(PROJECT_DIR, 'app/page.tsx'), 'utf-8');
+  assert(homeTsx.includes('notification_refreshed_version'), 'QA-05.6', 'app/page.tsx includes notification_refreshed_version one-time migration flag');
 
   // ----------------------------------------------------
   // QA-06: Puppeteer UI Floating Pill & Layout Verification (iPhone 12 Mini)
