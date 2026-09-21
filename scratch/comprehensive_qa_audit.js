@@ -76,14 +76,14 @@ async function runComprehensiveAudit() {
 
   // Version Sync
   const versionTs = fs.readFileSync(path.join(PROJECT_DIR, 'app/constants/version.ts'), 'utf-8');
-  assert(versionTs.includes('APP_VERSION = "1.1.5"'), 'CODE-03', 'app/constants/version.ts exports v1.1.5');
+  assert(versionTs.includes('APP_VERSION = "1.1.6"'), 'CODE-03', 'app/constants/version.ts exports v1.1.6');
 
   const pkgJson = fs.readFileSync(path.join(PROJECT_DIR, 'package.json'), 'utf-8');
-  assert(pkgJson.includes('"version": "1.1.5"'), 'CODE-04', 'package.json version is 1.1.5');
+  assert(pkgJson.includes('"version": "1.1.6"'), 'CODE-04', 'package.json version is 1.1.6');
 
   const pbxproj = fs.readFileSync(path.join(PROJECT_DIR, 'ios/App/App.xcodeproj/project.pbxproj'), 'utf-8');
-  assert(pbxproj.includes('MARKETING_VERSION = 1.1.5;'), 'CODE-05', 'Xcode MARKETING_VERSION is 1.1.5');
-  assert(pbxproj.includes('CURRENT_PROJECT_VERSION = 7;'), 'CODE-06', 'Xcode CURRENT_PROJECT_VERSION is 7');
+  assert(pbxproj.includes('MARKETING_VERSION = 1.1.6;'), 'CODE-05', 'Xcode MARKETING_VERSION is 1.1.6');
+  assert(pbxproj.includes('CURRENT_PROJECT_VERSION = 8;'), 'CODE-06', 'Xcode CURRENT_PROJECT_VERSION is 8');
 
   // Share link fix
   const shareTsx = fs.readFileSync(path.join(PROJECT_DIR, 'app/components/ShareButton.tsx'), 'utf-8');
@@ -167,7 +167,7 @@ async function runComprehensiveAudit() {
     await page.evaluate(() => new Promise(r => setTimeout(r, 600)));
 
     const settingsContent = await page.evaluate(() => document.body.innerText);
-    assert(settingsContent.includes('Daily Wisdom v1.1.5'), 'E2E-07', 'Settings page renders EXACT "Daily Wisdom v1.1.5" version text');
+    assert(settingsContent.includes('Daily Wisdom v1.1.6'), 'E2E-07', 'Settings page renders EXACT "Daily Wisdom v1.1.6" version text');
 
     const settingsProof = path.join(ARTIFACT_DIR, 'e2e_proof_settings.png');
     await page.screenshot({ path: settingsProof });

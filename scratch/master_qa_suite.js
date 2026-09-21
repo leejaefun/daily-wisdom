@@ -86,12 +86,12 @@ async function runMasterQASuite() {
   // ----------------------------------------------------
   console.log('\n--- [QA-05] Xcode Project Versioning & Settings & Central Version Check ---');
   const pbxproj = fs.readFileSync(path.join(PROJECT_DIR, 'ios/App/App.xcodeproj/project.pbxproj'), 'utf-8');
-  assert(pbxproj.includes('MARKETING_VERSION = 1.1.5;'), 'QA-05.1', 'pbxproj MARKETING_VERSION is 1.1.5');
-  assert(pbxproj.includes('CURRENT_PROJECT_VERSION = 7;'), 'QA-05.2', 'pbxproj CURRENT_PROJECT_VERSION is 7');
+  assert(pbxproj.includes('MARKETING_VERSION = 1.1.6;'), 'QA-05.1', 'pbxproj MARKETING_VERSION is 1.1.6');
+  assert(pbxproj.includes('CURRENT_PROJECT_VERSION = 8;'), 'QA-05.2', 'pbxproj CURRENT_PROJECT_VERSION is 8');
   assert(pbxproj.includes('PRODUCT_BUNDLE_IDENTIFIER = com.leejaefun.dailywisdom;'), 'QA-05.3', 'PRODUCT_BUNDLE_IDENTIFIER matches com.leejaefun.dailywisdom');
 
   const versionTs = fs.readFileSync(path.join(PROJECT_DIR, 'app/constants/version.ts'), 'utf-8');
-  assert(versionTs.includes('APP_VERSION = "1.1.5"'), 'QA-05.4', 'app/constants/version.ts exports APP_VERSION "1.1.5"');
+  assert(versionTs.includes('APP_VERSION = "1.1.6"'), 'QA-05.4', 'app/constants/version.ts exports APP_VERSION "1.1.6"');
 
   const capConfig = fs.readFileSync(path.join(PROJECT_DIR, 'capacitor.config.ts'), 'utf-8');
   assert(capConfig.includes('smallIcon: \'ic_stat_icon\''), 'QA-05.5', 'capacitor.config.ts configures LocalNotifications smallIcon');
